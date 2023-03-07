@@ -245,3 +245,47 @@ body::-webkit-scrollbar {
   display: flex;
   gap: 10px;
 }
+
+@media (max-width: 500px) {
+  /* ::-webkit-scrollbar {
+    display: none;
+  } */
+
+  #toggle-button {
+    display: none;
+  }
+
+  #side-nav {
+    display: none;
+  }
+
+  body {
+    padding: 20px 15px 0px 15px !important;
+  }
+
+  .site-functions {
+    justify-content: space-between;
+  }
+
+  #add_tables,
+  #check,
+  #clear_all_tables {
+    padding: 5px 15px;
+    font-size: 0.8rem;
+  }
+
+  .boxes {
+    padding-top: 15px;
+    overflow-x: scroll;
+    min-height: 91vh;
+  }
+
+  .cell {
+    font-size: 15px;
+    padding: 5px 2px;
+  }
+
+  .box {
+    width: 450px;
+  }
+}
