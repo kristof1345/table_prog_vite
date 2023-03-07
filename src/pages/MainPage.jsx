@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 import SideNav from "../components/SideNav";
 import Table from "../components/Table";
 import findSame from "../functions/check";
+import { v4 as uuidv4 } from "uuid";
 
-const MainPage = () => {
+const MainPage = ({ tables, setTables }) => {
+  const red = "rgb(250, 168, 168)";
   const [openPopUp, setOpenPopUp] = useState(false);
-  const [errorsToRender, setErrorsToRender] = useState([]);
-  const [tables, setTables] = useState([]);
+  const [errorsToRender, setErrorsToRender] = useState(
+    JSON.parse(localStorage.getItem("errors")) || []
+  );
+
+  useEffect(() => {
+    localStorage.setItem("errors", JSON.stringify(errorsToRender));
+  }, [errorsToRender]);
 
   const handleFormInput = (e) => {
     e.preventDefault();
@@ -19,22 +26,75 @@ const MainPage = () => {
   };
 
   function addTable(numOfCells, numOfCols, numOfTables) {
+    // const errorIds = errorsToRender.map((error) => error.id);
+    const errors = [...errorsToRender];
+    let id = "";
     // const newTables = [{ numOfCells, numOfCols }, ...tables]; // //og version
     const newTables = [...tables];
+    // used for num of tables functionality
     for (let i = 0; i < numOfTables; i++) {
-      // used for num of tables functionality
-      newTables.push({ numOfCells, numOfCols });
+      newTables.push({ numOfCells, numOfCols, errors, id });
     }
     newTables.map((table) => {
       table.numOfCols = numOfCols;
       table.numOfCells = numOfCells;
+      table.errors = errorsToRender;
+      table.id = uuidv4();
     });
     setTables(newTables);
   }
 
+  useEffect(() => {
+    if (errorsToRender == []) {
+      return;
+    } else {
+      // const errorIDs = errorsToRender.map((error) => error.id);
+      const newTables = [...tables];
+      newTables.map((table) => {
+        table.errors = [...errorsToRender];
+      });
+      setTables(newTables);
+    }
+  }, [errorsToRender]);
+
+  // const updateElems = async () => {
+  //   const errorIDs = errorsToRender.map((error) => error.id);
+  //   const newTables = [...tables];
+  //   console.log(newTables);
+  //   newTables.map((table) => {
+  //     table.errors = [...errorIDs];
+  //   });
+  //   console.log(newTables);
+  // };
+
   const clearAllTables = () => {
     const allCells = document.getElementsByClassName("cell");
     [...allCells].map((cell) => (cell.value = ""));
+  };
+
+  useEffect(() => {
+    tables.map((table) => {
+      table.errors.map((error) => {
+        let el = document.getElementById(error.errid);
+        if (el === null) {
+          return;
+        } else {
+          el.style.backgroundColor = red;
+          el.value = error.text;
+        }
+      });
+    });
+  });
+
+  const convertErrors = (prop) => {
+    const errorsReturned = prop;
+    const completeErrors = [];
+    errorsReturned.map((err) => {
+      let errid = err.id;
+      let text = err.value;
+      completeErrors.push({ errid, text });
+    });
+    setErrorsToRender(completeErrors);
   };
 
   return (
@@ -96,7 +156,7 @@ const MainPage = () => {
             id="check"
             onClick={() => {
               findSame;
-              setErrorsToRender(findSame());
+              convertErrors(findSame());
             }}
           >
             Check
@@ -117,7 +177,13 @@ const MainPage = () => {
         </div>
         <div className="boxes">
           {tables.map((table, index) => (
-            <Table key={index} table={table} index={index} />
+            <Table
+              key={index}
+              table={table}
+              index={index}
+              tables={tables}
+              setTables={setTables}
+            />
           ))}
         </div>
       </div>

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Cell from "./Cell";
 
-const Table = ({ table, index }) => {
+const Table = ({ table, index, tables, setTables }) => {
   const deleteTable = (el) => {
-    el.remove();
+    const newTables = tables.filter((item) => item.id != el.id);
+    setTables(newTables);
   };
 
   const clearTable = (el) => {
@@ -11,11 +12,21 @@ const Table = ({ table, index }) => {
     [...cells].map((cell) => (cell.value = ""));
   };
 
+  useEffect(() => {
+    const cells = document.querySelectorAll(".cell");
+    // if(cells != null) {
+    [...cells].map((cell, index) => {
+      cell.id = `err${index}`;
+    });
+    // }
+  });
+
   return (
     <div
       className="box"
       data-box={`${index + 1}`}
-      style={{ gridTemplateColumns: `repeat( ${+table.numOfCols}, 1fr)` }}
+      // style={{ gridTemplateColumns: `repeat( ${+table.numOfCols}, 1fr)` }}
+      id={table.id}
     >
       {[...Array(+table.numOfCells)].map((x, i) => (
         <Cell key={i} index={i + 1} />
