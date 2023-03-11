@@ -3,7 +3,17 @@ import Cell from "./Cell";
 
 const Table = ({ table, index, tables, setTables }) => {
   const deleteTable = (el) => {
-    const newTables = tables.filter((item) => item.id != el.id);
+    let ind = el.parentElement.parentElement.id;
+    const newTables = tables.filter((item) => item.id !== ind);
+    // let tablesCopy = [...tables];
+    // console.log(tablesCopy);
+    // const objWithIdIndex = tablesCopy.findIndex((obj) => obj.id === ind);
+    // console.log(objWithIdIndex);
+    // if (objWithIdIndex > -1) {
+    //   tablesCopy.splice(objWithIdIndex, 1);
+    // }
+    // setTables(tablesCopy);
+    // console.log(tablesCopy);
     setTables(newTables);
   };
 
@@ -40,13 +50,14 @@ const Table = ({ table, index, tables, setTables }) => {
               : null
           }
         >
-          Clear
+          {/* Clear */}
+          {table.id}
         </button>
         <button
           className="delete_table"
           onClick={(e) =>
             confirm("Sure you want to delete this table?") == true
-              ? deleteTable(e.target.parentElement.parentElement)
+              ? deleteTable(e.target)
               : null
           }
         >

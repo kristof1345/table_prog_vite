@@ -18,6 +18,7 @@ const SideNav = ({ errors }) => {
   });
 
   if (newErr[0] != null) {
+    // console.log(newErr);
     newErr.sort(
       (a, b) =>
         Number(a.parentElement.parentElement.dataset.box) -
