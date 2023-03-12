@@ -28,6 +28,7 @@ const MainPage = ({ tables, setTables }) => {
   function addTable(numOfCells, numOfCols, numOfTables) {
     // const errorIds = errorsToRender.map((error) => error.id);
     const errors = [...errorsToRender];
+    console.log(errorsToRender);
     let id = "";
     // const newTables = [{ numOfCells, numOfCols }, ...tables]; // //og version
     const newTables = [...tables];
@@ -183,6 +184,7 @@ const MainPage = ({ tables, setTables }) => {
               index={index}
               tables={tables}
               setTables={setTables}
+              setErrorsToRender={setErrorsToRender}
             />
           ))}
         </div>

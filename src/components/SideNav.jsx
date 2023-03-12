@@ -17,8 +17,7 @@ const SideNav = ({ errors }) => {
     newErr.push(el);
   });
 
-  if (newErr[0] != null) {
-    // console.log(newErr);
+  if (!newErr.includes(null)) {
     newErr.sort(
       (a, b) =>
         Number(a.parentElement.parentElement.dataset.box) -
@@ -40,7 +39,7 @@ const SideNav = ({ errors }) => {
                 {`Error on box ${error.parentElement.parentElement.dataset.box} cell ${error.dataset.index}`}
               </div>
             ))} */}
-            {newErr[0] != null
+            {!newErr.includes(null)
               ? newErr.map((error, i) => (
                   <div className="error" key={i}>
                     {`Error on box ${error.parentElement.parentElement.dataset.box} cell ${error.dataset.index}`}
