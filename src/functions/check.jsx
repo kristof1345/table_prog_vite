@@ -74,6 +74,7 @@ function findSame() {
     }
   }
   const Errors = [...new Set(errors)];
+  // console.log(Errors);
   return Errors;
 }
 

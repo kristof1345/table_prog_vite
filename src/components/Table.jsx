@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Cell from "./Cell";
-// import findSame from "../functions/check";
 
 const Table = ({ table, index, tables, setTables }) => {
   const deleteTable = (el) => {
@@ -27,7 +26,7 @@ const Table = ({ table, index, tables, setTables }) => {
     <div
       className="box"
       data-box={`${index + 1}`}
-      // style={{ gridTemplateColumns: `repeat( ${+table.numOfCols}, 1fr)` }}
+      style={{ gridTemplateColumns: `repeat( ${+table.numOfCols}, 1fr)` }}
       id={table.id}
     >
       {[...Array(+table.numOfCells)].map((x, i) => (

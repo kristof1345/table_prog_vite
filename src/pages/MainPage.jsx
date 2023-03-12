@@ -4,6 +4,7 @@ import SideNav from "../components/SideNav";
 import Table from "../components/Table";
 import findSame from "../functions/check";
 import { v4 as uuidv4 } from "uuid";
+import findNonErrors from "../functions/findNonErrors";
 
 const MainPage = ({ tables, setTables }) => {
   const red = "rgb(250, 168, 168)";
@@ -11,10 +12,16 @@ const MainPage = ({ tables, setTables }) => {
   const [errorsToRender, setErrorsToRender] = useState(
     JSON.parse(localStorage.getItem("errors")) || []
   );
+  const [nonErrors, setNonErrors] = useState(
+    JSON.parse(localStorage.getItem("nonErrors")) || []
+  );
 
   useEffect(() => {
     localStorage.setItem("errors", JSON.stringify(errorsToRender));
   }, [errorsToRender]);
+  useEffect(() => {
+    localStorage.setItem("nonErrors", JSON.stringify(nonErrors));
+  }, [nonErrors]);
 
   const handleFormInput = (e) => {
     e.preventDefault();
@@ -28,19 +35,20 @@ const MainPage = ({ tables, setTables }) => {
   function addTable(numOfCells, numOfCols, numOfTables) {
     // const errorIds = errorsToRender.map((error) => error.id);
     const errors = [...errorsToRender];
-    console.log(errorsToRender);
+    const nonerrors = [...nonErrors];
     let id = "";
     // const newTables = [{ numOfCells, numOfCols }, ...tables]; // //og version
     const newTables = [...tables];
     // used for num of tables functionality
     for (let i = 0; i < numOfTables; i++) {
-      newTables.push({ numOfCells, numOfCols, errors, id });
+      newTables.push({ numOfCells, numOfCols, errors, id, nonerrors });
     }
     newTables.map((table) => {
       table.numOfCols = numOfCols;
       table.numOfCells = numOfCells;
       table.errors = errorsToRender;
       table.id = uuidv4();
+      table.nonerrors = nonErrors;
     });
     setTables(newTables);
   }
@@ -49,7 +57,6 @@ const MainPage = ({ tables, setTables }) => {
     if (errorsToRender == []) {
       return;
     } else {
-      // const errorIDs = errorsToRender.map((error) => error.id);
       const newTables = [...tables];
       newTables.map((table) => {
         table.errors = [...errorsToRender];
@@ -58,15 +65,17 @@ const MainPage = ({ tables, setTables }) => {
     }
   }, [errorsToRender]);
 
-  // const updateElems = async () => {
-  //   const errorIDs = errorsToRender.map((error) => error.id);
-  //   const newTables = [...tables];
-  //   console.log(newTables);
-  //   newTables.map((table) => {
-  //     table.errors = [...errorIDs];
-  //   });
-  //   console.log(newTables);
-  // };
+  useEffect(() => {
+    if (nonErrors == []) {
+      return;
+    } else {
+      const newTables = [...tables];
+      newTables.map((table) => {
+        table.nonerrors = [...nonErrors];
+      });
+      setTables(newTables);
+    }
+  }, [nonErrors]);
 
   const clearAllTables = () => {
     const allCells = document.getElementsByClassName("cell");
@@ -84,6 +93,15 @@ const MainPage = ({ tables, setTables }) => {
           el.value = error.text;
         }
       });
+      table.nonerrors.map((nonerror) => {
+        let el = document.getElementById(nonerror.errid);
+        if (el === null) {
+          return;
+        } else {
+          el.style.backgroundColor = "transparent";
+          el.value = nonerror.text;
+        }
+      });
     });
   });
 
@@ -96,6 +114,26 @@ const MainPage = ({ tables, setTables }) => {
       completeErrors.push({ errid, text });
     });
     setErrorsToRender(completeErrors);
+  };
+
+  const convertNonErrors = (prop) => {
+    const cellsReturned = prop;
+    const convertedCells = [];
+    cellsReturned.map((cell) => {
+      let errid = cell.id;
+      let text = cell.value;
+      convertedCells.push({ errid, text });
+    });
+    const NonErrors = [...convertedCells];
+    convertedCells.map((cel) => {
+      errorsToRender.map((err) => {
+        if (cel.errid === err.errid) {
+          let ind = NonErrors.indexOf(cel);
+          NonErrors.splice(ind, 1);
+        }
+      });
+    });
+    setNonErrors(NonErrors);
   };
 
   return (
@@ -158,9 +196,10 @@ const MainPage = ({ tables, setTables }) => {
             onClick={() => {
               findSame;
               convertErrors(findSame());
+              convertNonErrors(findNonErrors());
             }}
           >
-            Check
+            Check/Save
           </button>
           <button id="add_tables" onClick={() => setOpenPopUp((prev) => !prev)}>
             Add Table
