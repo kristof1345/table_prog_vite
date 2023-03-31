@@ -9,19 +9,19 @@ import findNonErrors from "../functions/findNonErrors";
 const MainPage = ({ tables, setTables }) => {
   const red = "rgb(250, 168, 168)";
   const [openPopUp, setOpenPopUp] = useState(false);
-  const [errorsToRender, setErrorsToRender] = useState(
-    JSON.parse(localStorage.getItem("errors")) || []
-  );
-  const [nonErrors, setNonErrors] = useState(
-    JSON.parse(localStorage.getItem("nonErrors")) || []
-  );
+  // const [errorsToRender, setErrorsToRender] = useState(
+  //   JSON.parse(localStorage.getItem("errors")) || []
+  // );
+  // const [nonErrors, setNonErrors] = useState(
+  //   JSON.parse(localStorage.getItem("nonErrors")) || []
+  // );
 
-  useEffect(() => {
-    localStorage.setItem("errors", JSON.stringify(errorsToRender));
-  }, [errorsToRender]);
-  useEffect(() => {
-    localStorage.setItem("nonErrors", JSON.stringify(nonErrors));
-  }, [nonErrors]);
+  // useEffect(() => {
+  //   localStorage.setItem("errors", JSON.stringify(errorsToRender));
+  // }, [errorsToRender]);
+  // useEffect(() => {
+  //   localStorage.setItem("nonErrors", JSON.stringify(nonErrors));
+  // }, [nonErrors]);
 
   const handleFormInput = (e) => {
     e.preventDefault();
@@ -33,15 +33,20 @@ const MainPage = ({ tables, setTables }) => {
   };
 
   function addTable(numOfCells, numOfCols, numOfTables) {
-    // const errorIds = errorsToRender.map((error) => error.id);
     const errors = [...errorsToRender];
     const nonerrors = [...nonErrors];
     let id = "";
-    // const newTables = [{ numOfCells, numOfCols }, ...tables]; // //og version
+    let cells = [];
+    for (let i = 0; i < numOfCells; i++) {
+      cells.push({
+        id: "",
+        error: "",
+        cellValue: "",
+      });
+    }
     const newTables = [...tables];
-    // used for num of tables functionality
     for (let i = 0; i < numOfTables; i++) {
-      newTables.push({ numOfCells, numOfCols, errors, id, nonerrors });
+      newTables.push({ numOfCells, numOfCols, errors, id, nonerrors, cells });
     }
     newTables.map((table) => {
       table.numOfCols = numOfCols;
@@ -49,33 +54,12 @@ const MainPage = ({ tables, setTables }) => {
       table.errors = errorsToRender;
       table.id = uuidv4();
       table.nonerrors = nonErrors;
+      table.cells.map((cell, i) => {
+        cell.id = uuidv4();
+      });
     });
     setTables(newTables);
   }
-
-  useEffect(() => {
-    if (errorsToRender == []) {
-      return;
-    } else {
-      const newTables = [...tables];
-      newTables.map((table) => {
-        table.errors = [...errorsToRender];
-      });
-      setTables(newTables);
-    }
-  }, [errorsToRender]);
-
-  useEffect(() => {
-    if (nonErrors == []) {
-      return;
-    } else {
-      const newTables = [...tables];
-      newTables.map((table) => {
-        table.nonerrors = [...nonErrors];
-      });
-      setTables(newTables);
-    }
-  }, [nonErrors]);
 
   const clearAllTables = () => {
     const allCells = document.getElementsByClassName("cell");
@@ -84,22 +68,16 @@ const MainPage = ({ tables, setTables }) => {
 
   useEffect(() => {
     tables.map((table) => {
-      table.errors.map((error) => {
-        let el = document.getElementById(error.errid);
-        if (el === null) {
+      table.cells.map((cell) => {
+        let domCell = document.getElementById(cell.id);
+        if (domCell === null) {
           return;
-        } else {
-          el.style.backgroundColor = red;
-          el.value = error.text;
-        }
-      });
-      table.nonerrors.map((nonerror) => {
-        let el = document.getElementById(nonerror.errid);
-        if (el === null) {
-          return;
-        } else {
-          el.style.backgroundColor = "transparent";
-          el.value = nonerror.text;
+        } else if (!cell.error == "") {
+          domCell.style.backgroundColor = red;
+          domCell.value = cell.error;
+        } else if (!cell.cellValue == "") {
+          domCell.style.backgroundColor = "transparent";
+          domCell.value = cell.cellValue;
         }
       });
     });
@@ -107,33 +85,55 @@ const MainPage = ({ tables, setTables }) => {
 
   const convertErrors = (prop) => {
     const errorsReturned = prop;
-    const completeErrors = [];
+    const errIDs = errorsReturned.map((err) => err.id);
+    console.log(errIDs);
+    let newTables = [...tables];
     errorsReturned.map((err) => {
-      let errid = err.id;
-      let text = err.value;
-      completeErrors.push({ errid, text });
+      newTables.map((table) => {
+        table.cells.map((cell) => {
+          if (cell.id === err.id) {
+            cell.error = err.value;
+            setTables(newTables);
+          }
+        });
+      });
     });
-    setErrorsToRender(completeErrors);
-  };
-
-  const convertNonErrors = (prop) => {
-    const cellsReturned = prop;
-    const convertedCells = [];
-    cellsReturned.map((cell) => {
-      let errid = cell.id;
-      let text = cell.value;
-      convertedCells.push({ errid, text });
-    });
-    const NonErrors = [...convertedCells];
-    convertedCells.map((cel) => {
-      errorsToRender.map((err) => {
-        if (cel.errid === err.errid) {
-          let ind = NonErrors.indexOf(cel);
-          NonErrors.splice(ind, 1);
+    newTables.map((table) => {
+      table.cells.map((cell) => {
+        if (!errIDs.includes(cell.id)) {
+          cell.error = "";
+          setTables(newTables);
         }
       });
     });
-    setNonErrors(NonErrors);
+  };
+
+  const convertNonErrors = (prop) => {
+    const cellsReturned = prop.cells;
+    const emptyCellsReturned = prop.empty;
+    let newTables = [...tables];
+    cellsReturned.map((returned) => {
+      newTables.map((table) => {
+        table.cells.map((cell) => {
+          if (cell.id === returned.id && cell.error == "") {
+            cell.cellValue = returned.value;
+            setTables(newTables);
+          }
+        });
+      });
+    });
+
+    emptyCellsReturned.map((empty) => {
+      newTables.map((table) => {
+        table.cells.map((cell) => {
+          if (cell.id === empty.id) {
+            cell.cellValue = "";
+            cell.error = "";
+            setTables(newTables);
+          }
+        });
+      });
+    });
   };
 
   return (
@@ -188,7 +188,7 @@ const MainPage = ({ tables, setTables }) => {
           </div>
         </div>
       )}
-      <SideNav errors={errorsToRender} />
+      <SideNav tables={tables} />
       <div className="main-content">
         <div className="site-functions">
           <button
@@ -223,7 +223,6 @@ const MainPage = ({ tables, setTables }) => {
               index={index}
               tables={tables}
               setTables={setTables}
-              setErrorsToRender={setErrorsToRender}
             />
           ))}
         </div>

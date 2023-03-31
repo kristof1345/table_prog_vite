@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaBars } from "react-icons/fa";
 
-const SideNav = ({ errors }) => {
+const SideNav = ({ tables }) => {
   const newErr = [];
+  const newTables = [...tables];
   const body = document.querySelector("body");
   const [toggleNav, setToggleNav] = useState(true);
 
@@ -12,9 +13,17 @@ const SideNav = ({ errors }) => {
     body.style.paddingRight = "270px";
   }
 
-  errors.map((error) => {
-    let el = document.getElementById(error.errid);
-    newErr.push(el);
+  // useEffect(() => {
+  //   console.log("changed");
+  // }, [tables]);
+
+  newTables.map((table) => {
+    table.cells.map((cell) => {
+      if (cell.error != "") {
+        let el = document.getElementById(cell.id);
+        newErr.push(el);
+      }
+    });
   });
 
   if (!newErr.includes(null)) {
@@ -25,6 +34,23 @@ const SideNav = ({ errors }) => {
     );
   }
 
+  // tables.map((table) => {
+  //   table.cells.map((cell) => {
+  //     if (cell.error != "") {
+  //       let el = document.getElementById(cell.id);
+  //       newErr.push(el);
+  //     }
+  //   });
+  // });
+
+  // if (!newErr.includes(null)) {
+  //   newErr.sort(
+  //     (a, b) =>
+  //       Number(a.parentElement.parentElement.dataset.box) -
+  //       Number(b.parentElement.parentElement.dataset.box)
+  //   );
+  // }
+
   return (
     <div className="side-navigation">
       <button id="toggle-button" onClick={() => setToggleNav((prev) => !prev)}>
@@ -34,11 +60,6 @@ const SideNav = ({ errors }) => {
         <div id="side-nav">
           <h5 id="errors-title">Errors</h5>
           <div id="output-errors">
-            {/* {newErr.map((error, i) => (
-              <div className="error" key={i}>
-                {`Error on box ${error.parentElement.parentElement.dataset.box} cell ${error.dataset.index}`}
-              </div>
-            ))} */}
             {!newErr.includes(null)
               ? newErr.map((error, i) => (
                   <div className="error" key={i}>

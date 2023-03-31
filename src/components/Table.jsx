@@ -13,14 +13,14 @@ const Table = ({ table, index, tables, setTables }) => {
     [...cells].map((cell) => (cell.value = ""));
   };
 
-  useEffect(() => {
-    const cells = document.querySelectorAll(".cell");
-    // if(cells != null) {
-    [...cells].map((cell, index) => {
-      cell.id = `err${index}`;
-    });
-    // }
-  });
+  // useEffect(() => {
+  //   const cells = document.querySelectorAll(".cell");
+  //   // if(cells != null) {
+  //   [...cells].map((cell, index) => {
+  //     cell.id = `err${index}`;
+  //   });
+  //   // }
+  // });
 
   return (
     <div
@@ -29,8 +29,8 @@ const Table = ({ table, index, tables, setTables }) => {
       style={{ gridTemplateColumns: `repeat( ${+table.numOfCols}, 1fr)` }}
       id={table.id}
     >
-      {[...Array(+table.numOfCells)].map((x, i) => (
-        <Cell key={i} index={i + 1} />
+      {table.cells.map((x, i) => (
+        <Cell key={i} index={i + 1} id={x.id} />
       ))}
       <div className="table_nav">
         <button
