@@ -9,19 +9,6 @@ import findNonErrors from "../functions/findNonErrors";
 const MainPage = ({ tables, setTables }) => {
   const red = "rgb(250, 168, 168)";
   const [openPopUp, setOpenPopUp] = useState(false);
-  // const [errorsToRender, setErrorsToRender] = useState(
-  //   JSON.parse(localStorage.getItem("errors")) || []
-  // );
-  // const [nonErrors, setNonErrors] = useState(
-  //   JSON.parse(localStorage.getItem("nonErrors")) || []
-  // );
-
-  // useEffect(() => {
-  //   localStorage.setItem("errors", JSON.stringify(errorsToRender));
-  // }, [errorsToRender]);
-  // useEffect(() => {
-  //   localStorage.setItem("nonErrors", JSON.stringify(nonErrors));
-  // }, [nonErrors]);
 
   const handleFormInput = (e) => {
     e.preventDefault();
@@ -33,12 +20,10 @@ const MainPage = ({ tables, setTables }) => {
   };
 
   function addTable(numOfCells, numOfCols, numOfTables) {
-    const errors = [...errorsToRender];
-    const nonerrors = [...nonErrors];
     let id = "";
-    let cells = [];
+    let Cells = [];
     for (let i = 0; i < numOfCells; i++) {
-      cells.push({
+      Cells.push({
         id: "",
         error: "",
         cellValue: "",
@@ -46,19 +31,31 @@ const MainPage = ({ tables, setTables }) => {
     }
     const newTables = [...tables];
     for (let i = 0; i < numOfTables; i++) {
-      newTables.push({ numOfCells, numOfCols, errors, id, nonerrors, cells });
+      // newTables.push({ numOfCells, numOfCols, id, Cells });
+      newTables.push({
+        numOfCells,
+        numOfCols,
+        id: uuidv4(),
+        cells: func(Cells),
+      });
     }
     newTables.map((table) => {
       table.numOfCols = numOfCols;
       table.numOfCells = numOfCells;
-      table.errors = errorsToRender;
-      table.id = uuidv4();
-      table.nonerrors = nonErrors;
-      table.cells.map((cell, i) => {
-        cell.id = uuidv4();
-      });
+      // table.id = uuidv4();
+      // table.cells.map((cell) => {
+      //   cell.id = uuidv4();
+      // });
     });
     setTables(newTables);
+  }
+
+  function func(Cells) {
+    let cellsCopy = JSON.parse(JSON.stringify(Cells));
+    for (let i = 0; i < cellsCopy.length; i++) {
+      cellsCopy[i].id = uuidv4();
+    }
+    return cellsCopy;
   }
 
   const clearAllTables = () => {
