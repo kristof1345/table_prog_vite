@@ -8,9 +8,9 @@ const SideNav = ({ tables }) => {
   const [toggleNav, setToggleNav] = useState(true);
 
   if (!toggleNav) {
-    body.style.paddingRight = "40px";
+    body.style.paddingRight = "0px";
   } else {
-    body.style.paddingRight = "270px";
+    body.style.paddingRight = "250px";
   }
 
   newTables.map((table) => {

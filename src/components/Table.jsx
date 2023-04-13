@@ -5,6 +5,7 @@ const Table = ({ table, index, tables, setTables }) => {
     let ind = el.parentElement.parentElement.id;
     const newTables = tables.filter((item) => item.id !== ind);
     setTables(newTables);
+    window.location.reload();
   };
 
   const clearTable = (el) => {

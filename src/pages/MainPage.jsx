@@ -1,57 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { IoCloseOutline } from "react-icons/io5";
 import SideNav from "../components/SideNav";
 import Table from "../components/Table";
 import findSame from "../functions/check";
-import { v4 as uuidv4 } from "uuid";
 import findNonErrors from "../functions/findNonErrors";
+import PopUp from "../components/PopUp";
 
 const MainPage = ({ tables, setTables }) => {
   const red = "rgb(250, 168, 168)";
   const [openPopUp, setOpenPopUp] = useState(false);
-
-  const handleFormInput = (e) => {
-    e.preventDefault();
-    const numOfCells = document.getElementById("num_of_cells");
-    const numOfCols = document.getElementById("num_of_col");
-    const numOfTables = document.getElementById("num_of_tab");
-    setOpenPopUp(false);
-    addTable(numOfCells.value, numOfCols.value, numOfTables.value);
-  };
-
-  function addTable(numOfCells, numOfCols, numOfTables) {
-    let id = "";
-    let Cells = [];
-    for (let i = 0; i < numOfCells; i++) {
-      Cells.push({
-        id: "",
-        error: "",
-        cellValue: "",
-      });
-    }
-    const newTables = [...tables];
-    for (let i = 0; i < numOfTables; i++) {
-      newTables.push({
-        numOfCells,
-        numOfCols,
-        id: uuidv4(),
-        cells: func(Cells),
-      });
-    }
-    newTables.map((table) => {
-      table.numOfCols = numOfCols;
-      table.numOfCells = numOfCells;
-    });
-    setTables(newTables);
-  }
-
-  function func(Cells) {
-    let cellsCopy = JSON.parse(JSON.stringify(Cells));
-    for (let i = 0; i < cellsCopy.length; i++) {
-      cellsCopy[i].id = uuidv4();
-    }
-    return cellsCopy;
-  }
 
   const clearAllTables = () => {
     const allCells = document.getElementsByClassName("cell");
@@ -78,7 +34,6 @@ const MainPage = ({ tables, setTables }) => {
   const convertErrors = (prop) => {
     const errorsReturned = prop;
     const errIDs = errorsReturned.map((err) => err.id);
-    console.log(errIDs);
     let newTables = [...tables];
     errorsReturned.map((err) => {
       newTables.map((table) => {
@@ -131,81 +86,43 @@ const MainPage = ({ tables, setTables }) => {
   return (
     <div className="App">
       {openPopUp && (
-        <div id="pop_up-wrapper">
-          <div id="pop_up">
-            <form id="pop_up-form" onSubmit={handleFormInput}>
-              <IoCloseOutline
-                className="close-pop_up"
-                onClick={() => setOpenPopUp((prev) => !prev)}
-              />
-              <div className="inputs">
-                <div className="input_label">
-                  <p>Number of cells:</p>
-                  <input
-                    type="number"
-                    className="pop_up-num"
-                    id="num_of_cells"
-                    defaultValue="40"
-                    min="1"
-                    max="60"
-                  />
-                </div>
-                <div className="input_label">
-                  <p>Number of columns:</p>
-                  <input
-                    type="number"
-                    className="pop_up-num"
-                    id="num_of_col"
-                    defaultValue="8"
-                    min="1"
-                    max="8"
-                  />
-                </div>
-                <div className="input_label">
-                  <p>Number of tables:</p>
-                  <input
-                    type="number"
-                    className="pop_up-num"
-                    id="num_of_tab"
-                    defaultValue="1"
-                    min="1"
-                    max="10"
-                  />
-                </div>
-              </div>
-              <button type="submit" id="add_table-submit">
-                Add table
-              </button>
-            </form>
-          </div>
-        </div>
+        <PopUp
+          setOpenPopUp={setOpenPopUp}
+          tables={tables}
+          setTables={setTables}
+        />
       )}
       <SideNav tables={tables} />
       <div className="main-content">
-        <div className="site-functions">
-          <button
-            id="check"
-            onClick={() => {
-              findSame;
-              convertErrors(findSame());
-              convertNonErrors(findNonErrors());
-            }}
-          >
-            Check/Save
-          </button>
-          <button id="add_tables" onClick={() => setOpenPopUp((prev) => !prev)}>
-            Add Table
-          </button>
-          <button
-            id="clear_all_tables"
-            onClick={() =>
-              confirm("Sure want to clear all the tables?") == true
-                ? clearAllTables()
-                : null
-            }
-          >
-            Clear All Tables
-          </button>
+        <div className="glass-header">
+          <div className="site-functions">
+            <button
+              id="check"
+              onClick={() => {
+                findSame;
+                convertErrors(findSame());
+                convertNonErrors(findNonErrors());
+              }}
+            >
+              Check/Save
+            </button>
+            <button
+              id="add_tables"
+              onClick={() => setOpenPopUp((prev) => !prev)}
+            >
+              Add Table
+            </button>
+            <button
+              id="clear_all_tables"
+              onClick={() =>
+                confirm("Sure want to clear all the tables?") == true
+                  ? clearAllTables()
+                  : null
+              }
+            >
+              Clear All Tables
+            </button>
+          </div>
         </div>
         <div className="boxes">
           {tables.map((table, index) => (
