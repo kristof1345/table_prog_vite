@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FaBars } from "react-icons/fa";
 
 const SideNav = ({ tables }) => {
@@ -12,10 +12,6 @@ const SideNav = ({ tables }) => {
   } else {
     body.style.paddingRight = "270px";
   }
-
-  // useEffect(() => {
-  //   console.log("changed");
-  // }, [tables]);
 
   newTables.map((table) => {
     table.cells.map((cell) => {
@@ -33,23 +29,6 @@ const SideNav = ({ tables }) => {
         Number(b.parentElement.parentElement.dataset.box)
     );
   }
-
-  // tables.map((table) => {
-  //   table.cells.map((cell) => {
-  //     if (cell.error != "") {
-  //       let el = document.getElementById(cell.id);
-  //       newErr.push(el);
-  //     }
-  //   });
-  // });
-
-  // if (!newErr.includes(null)) {
-  //   newErr.sort(
-  //     (a, b) =>
-  //       Number(a.parentElement.parentElement.dataset.box) -
-  //       Number(b.parentElement.parentElement.dataset.box)
-  //   );
-  // }
 
   return (
     <div className="side-navigation">

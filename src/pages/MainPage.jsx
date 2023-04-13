@@ -31,7 +31,6 @@ const MainPage = ({ tables, setTables }) => {
     }
     const newTables = [...tables];
     for (let i = 0; i < numOfTables; i++) {
-      // newTables.push({ numOfCells, numOfCols, id, Cells });
       newTables.push({
         numOfCells,
         numOfCols,
@@ -42,10 +41,6 @@ const MainPage = ({ tables, setTables }) => {
     newTables.map((table) => {
       table.numOfCols = numOfCols;
       table.numOfCells = numOfCells;
-      // table.id = uuidv4();
-      // table.cells.map((cell) => {
-      //   cell.id = uuidv4();
-      // });
     });
     setTables(newTables);
   }

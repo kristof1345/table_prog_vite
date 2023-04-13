@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import Cell from "./Cell";
 
 const Table = ({ table, index, tables, setTables }) => {
@@ -12,15 +11,6 @@ const Table = ({ table, index, tables, setTables }) => {
     const cells = el.querySelectorAll(".cell");
     [...cells].map((cell) => (cell.value = ""));
   };
-
-  // useEffect(() => {
-  //   const cells = document.querySelectorAll(".cell");
-  //   // if(cells != null) {
-  //   [...cells].map((cell, index) => {
-  //     cell.id = `err${index}`;
-  //   });
-  //   // }
-  // });
 
   return (
     <div
@@ -42,7 +32,6 @@ const Table = ({ table, index, tables, setTables }) => {
           }
         >
           Clear
-          {/* {table.id} */}
         </button>
         <button
           className="delete_table"
