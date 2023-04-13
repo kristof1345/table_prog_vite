@@ -14,6 +14,55 @@ body {
   padding: 0px 270px 0px 0px;
 }
 
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/*! MAIN CONTENT*/
+.main-content {
+  position: relative;
+}
+
+.boxes {
+  padding: 90px 40px 20px 40px;
+}
+
+/*! TABLE */
+.box {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr); /*prev: 152px 12%*/
+  margin-bottom: 50px;
+  position: relative;
+  padding-top: 38px;
+}
+
+.table_nav {
+  position: absolute;
+  display: flex;
+  gap: 10px;
+  top: 10px;
+  right: 0;
+}
+
+.clear_table,
+.delete_table {
+  font-size: 0.7rem;
+  cursor: pointer;
+  padding: 4px 12px;
+  background-color: rgb(222, 222, 222);
+  border: none;
+  border-radius: 5px;
+}
+
+.delete_table:hover {
+  background-color: rgb(250, 168, 168);
+}
+
+.clear_table:hover {
+  background-color: rgb(196, 196, 196);
+}
+
+/*! CELLS */
 .cell-wrapper {
   position: relative;
 }
@@ -39,18 +88,41 @@ input:focus {
   outline: none;
 }
 
-.box {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr); /*prev: 152px 12%*/
-  margin: 0px 0px 50px 0px;
-  position: relative;
-  padding-top: 38px;
+/*! HEADER */
+.site-functions {
+  display: flex;
+  gap: 10px;
+  padding: 15px 40px;
 }
 
-body::-webkit-scrollbar {
-  display: none;
+.glass-header {
+  width: 100%;
+  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.1);
+  position: fixed;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(5px);
 }
 
+#check,
+#add_tables,
+#clear_all_tables {
+  padding: 10px 20px;
+  background-color: rgb(222, 222, 222);
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+#clear_all_tables:hover,
+#add_tables:hover,
+#check:hover,
+#toggle-button:hover {
+  background-color: rgb(209, 209, 209);
+}
+
+/*! SIDE NAV */
 #side-nav {
   position: fixed;
   right: 0;
@@ -59,7 +131,6 @@ body::-webkit-scrollbar {
   height: 100%;
   background-color: rgba(255, 255, 255, 1);
   padding: 37px 10px 10px;
-  transition: width 0.1s ease-in-out;
   overflow-y: scroll;
   z-index: 3;
 }
@@ -94,47 +165,7 @@ body::-webkit-scrollbar {
   margin-top: 5px;
 }
 
-.main-content {
-  position: relative;
-}
-
-.boxes {
-  padding: 80px 40px 20px 40px;
-}
-
-.site-functions {
-  display: flex;
-  gap: 10px;
-  padding: 15px 40px;
-}
-
-.glass-header {
-  width: 100%;
-  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.1);
-  position: fixed;
-  z-index: 1;
-  background-color: rgba(255, 255, 255, 0);
-  backdrop-filter: blur(5px);
-}
-
-#check,
-#add_tables,
-#clear_all_tables {
-  padding: 10px 20px;
-  background-color: rgb(222, 222, 222);
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-#clear_all_tables:hover,
-#add_tables:hover,
-#check:hover,
-#toggle-button:hover {
-  background-color: rgb(209, 209, 209);
-}
-
+/*! POPUP */
 #pop_up-wrapper {
   display: flex;
   background-color: rgba(0, 0, 0, 0.4);
@@ -165,18 +196,8 @@ body::-webkit-scrollbar {
   font-size: 1.5rem;
 }
 
+.pop_up-num,
 .pop_up-input {
-  background-color: rgb(233, 233, 233);
-  border: none;
-  border-radius: 0.5rem;
-  width: 100%;
-  margin-top: 3px;
-  font-size: 1.2rem;
-  padding: 10px 15px;
-  font-size: 20px;
-}
-
-.pop_up-num {
   background-color: rgb(233, 233, 233);
   border: none;
   border-radius: 0.5rem;
@@ -216,6 +237,7 @@ body::-webkit-scrollbar {
   cursor: pointer;
 }
 
+/*! TABLE */
 .table_nav {
   position: absolute;
   display: flex;
@@ -224,26 +246,18 @@ body::-webkit-scrollbar {
   right: 0;
 }
 
+.clear_table,
 .delete_table {
+  font-size: 0.7rem;
+  cursor: pointer;
   padding: 4px 12px;
   background-color: rgb(222, 222, 222);
   border: none;
   border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.7rem;
 }
 
 .delete_table:hover {
   background-color: rgb(250, 168, 168);
-}
-
-.clear_table {
-  font-size: 0.7rem;
-  cursor: pointer;
-  padding: 4px 12px;
-  background-color: rgb(222, 222, 222);
-  border: none;
-  border-radius: 5px;
 }
 
 .clear_table:hover {
@@ -251,10 +265,6 @@ body::-webkit-scrollbar {
 }
 
 @media (max-width: 500px) {
-  /* ::-webkit-scrollbar {
-    display: none;
-  } */
-
   #toggle-button {
     display: none;
   }
