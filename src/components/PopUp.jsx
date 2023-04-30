@@ -1,4 +1,3 @@
-import React from "react";
 import { IoCloseOutline } from "react-icons/io5";
 import { v4 as uuidv4 } from "uuid";
 
@@ -47,8 +46,8 @@ const PopUp = ({ setOpenPopUp, tables, setTables }) => {
   }
 
   return (
-    <div id="pop_up-wrapper">
-      <div id="pop_up">
+    <div className="pop_up-wrapper">
+      <div className="pop_up">
         <form id="pop_up-form" onSubmit={handleFormInput}>
           <IoCloseOutline
             className="close-pop_up"

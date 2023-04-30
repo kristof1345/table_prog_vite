@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import SideNav from "../components/SideNav";
 import Table from "../components/Table";
 import PopUp from "../components/PopUp";
+import FillPopUp from "../components/FillPopUp";
 import Header from "../components/Header";
 
 const MainPage = ({ tables, setTables }) => {
   const red = "rgb(250, 168, 168)";
   const [openPopUp, setOpenPopUp] = useState(false);
+  const [openFillPopUp, setOpenFillPopUp] = useState(false);
 
   useEffect(() => {
     tables.map((table) => {
@@ -34,12 +36,14 @@ const MainPage = ({ tables, setTables }) => {
           setTables={setTables}
         />
       )}
+      {openFillPopUp && <FillPopUp setOpenFillPopUp={setOpenFillPopUp} />}
       <SideNav tables={tables} />
       <div className="main-content">
         <Header
           setOpenPopUp={setOpenPopUp}
           tables={tables}
           setTables={setTables}
+          setOpenFillPopUp={setOpenFillPopUp}
         />
         <div className="boxes">
           {tables.map((table, index) => (

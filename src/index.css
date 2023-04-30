@@ -106,8 +106,10 @@ input:focus {
 
 #check,
 #add_tables,
-#clear_all_tables {
-  padding: 10px 20px;
+#clear_all_tables,
+#fill_tables,
+#add_table-submit {
+  padding: 8px 20px;
   background-color: rgb(222, 222, 222);
   border: none;
   border-radius: 0.5rem;
@@ -118,7 +120,9 @@ input:focus {
 #clear_all_tables:hover,
 #add_tables:hover,
 #check:hover,
-#toggle-button:hover {
+#toggle-button:hover,
+#fill_tables:hover,
+#add_table-submit:hover {
   background-color: rgb(209, 209, 209);
 }
 
@@ -166,7 +170,7 @@ input:focus {
 }
 
 /*! POPUP */
-#pop_up-wrapper {
+.pop_up-wrapper {
   display: flex;
   background-color: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(2px);
@@ -180,7 +184,7 @@ input:focus {
   align-items: center;
 }
 
-#pop_up {
+.pop_up {
   width: 50%;
   padding: 40px 30px;
   border-radius: 0.5rem;
@@ -226,15 +230,6 @@ input:focus {
   column-gap: 20px;
   row-gap: 10px;
   padding-bottom: 20px;
-}
-
-#add_table-submit {
-  padding: 10px 20px;
-  background-color: rgb(209, 209, 209);
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  cursor: pointer;
 }
 
 /*! TABLE */

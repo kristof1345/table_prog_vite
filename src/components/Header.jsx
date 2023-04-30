@@ -1,7 +1,7 @@
 import findSame from "../functions/check";
 import findNonErrors from "../functions/findNonErrors";
 
-const Header = ({ setOpenPopUp, tables, setTables }) => {
+const Header = ({ setOpenPopUp, tables, setTables, setOpenFillPopUp }) => {
   const clearAllTables = () => {
     const allCells = document.getElementsByClassName("cell");
     [...allCells].map((cell) => (cell.value = ""));
@@ -92,6 +92,12 @@ const Header = ({ setOpenPopUp, tables, setTables }) => {
           }
         >
           Clear All Tables
+        </button>
+        <button
+          id="fill_tables"
+          onClick={() => setOpenFillPopUp((prev) => !prev)}
+        >
+          Fill Tables
         </button>
       </div>
     </div>
