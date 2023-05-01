@@ -10,6 +10,7 @@ const FillPopUp = ({ setOpenFillPopUp }) => {
     const inputs = document.getElementsByClassName("pop_up-text");
     let ret = [...inputs].map((input) => input.value);
     fillCells(ret);
+    setOpenFillPopUp((prev) => !prev);
   };
 
   return (
