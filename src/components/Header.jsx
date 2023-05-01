@@ -67,11 +67,20 @@ const Header = ({ setOpenPopUp, tables, setTables, setOpenFillPopUp }) => {
     });
   };
 
+  const configureAndSet = (setFunc) => {
+    if (tables.length) {
+      setFunc((prev) => !prev);
+    } else {
+      alert("Please add a table first");
+    }
+  };
+
   return (
     <div className="glass-header">
       <div className="site-functions">
         <button
           id="check"
+          className="nav-item"
           onClick={() => {
             findSame;
             convertErrors(findSame());
@@ -85,6 +94,7 @@ const Header = ({ setOpenPopUp, tables, setTables, setOpenFillPopUp }) => {
         </button>
         <button
           id="clear_all_tables"
+          className="nav-item"
           onClick={() =>
             confirm("Sure want to clear all the tables?") == true
               ? clearAllTables()
@@ -95,7 +105,8 @@ const Header = ({ setOpenPopUp, tables, setTables, setOpenFillPopUp }) => {
         </button>
         <button
           id="fill_tables"
-          onClick={() => setOpenFillPopUp((prev) => !prev)}
+          className="nav-item"
+          onClick={() => configureAndSet(setOpenFillPopUp)}
         >
           Fill Tables
         </button>

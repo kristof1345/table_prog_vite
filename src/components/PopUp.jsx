@@ -1,5 +1,6 @@
 import { IoCloseOutline } from "react-icons/io5";
 import { v4 as uuidv4 } from "uuid";
+import { useEffect } from "react";
 
 const PopUp = ({ setOpenPopUp, tables, setTables }) => {
   const handleFormInput = (e) => {
