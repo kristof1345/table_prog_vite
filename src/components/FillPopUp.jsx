@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IoCloseOutline } from "react-icons/io5";
+import fillCells from "../functions/fillCells";
 
 const FillPopUp = ({ setOpenFillPopUp }) => {
   const [numOCols, setNumOCols] = useState(0);
@@ -8,10 +9,8 @@ const FillPopUp = ({ setOpenFillPopUp }) => {
     e.preventDefault();
     const inputs = document.getElementsByClassName("pop_up-text");
     let ret = [...inputs].map((input) => input.value);
-    console.log(ret);
+    fillCells(ret);
   };
-
-  console.log(numOCols);
 
   return (
     <div className="pop_up-wrapper">

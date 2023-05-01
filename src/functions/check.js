@@ -1,6 +1,6 @@
 //? Find errors start
 //* Main Function
-function findSame() {
+export default function findSame() {
   const red = "rgb(250, 168, 168)";
   const cells = document.querySelectorAll(".cell");
   const errors = [];
@@ -94,5 +94,3 @@ const checkForMatch = (cell, arr) => {
   return x.includes(true); //if array of booleans includes at least one "true" there is a match for this nonMatch cell
 };
 //? Find errors end
-
-export default findSame;
