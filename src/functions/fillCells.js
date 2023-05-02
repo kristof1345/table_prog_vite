@@ -9,6 +9,7 @@ export default function fillCells(values) {
     let sameCells = [...cells].filter(
       (cell) => cell.dataset.index === (i + 1).toString()
     );
+    console.log(cell, sameCells); //TODO for some reason after the first table filtered sameCells is just an empty array
     while (checkForMatch(cell, sameCells)) {
       const randIdx = getRandomInt(fillableValues.length);
       cell.value = fillableValues[randIdx];
